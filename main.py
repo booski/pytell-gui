@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 from tellcore.telldus import TelldusCore
-#from tkinter import tix
 from tkinter.tix import *
 from tkinter.font import Font
+from subprocess import call
 
 
 tk = Tk()
@@ -45,6 +45,7 @@ for device in devices:
                       text="ON", 
                       command=makeaction(device, 'on'),
                       font=font, 
+                      activebackground='#00FF00',
                       bg='#00AA00')
     onbutton.pack(side=LEFT)
 
@@ -52,6 +53,7 @@ for device in devices:
                        text="OFF", 
                        command=makeaction(device, 'off'), 
                        font=font, 
+                       activebackground='#FF0000',
                        bg='#AA0000')
     offbutton.pack(side=RIGHT)
 
@@ -65,7 +67,7 @@ for device in devices:
     
 
 exitframe = Frame(tk)
-exitbutton = Button(exitframe, text='EXIT', command=exit, font=font)
+exitbutton = Button(exitframe, text='EXIT', command=(lambda: call(["sudo", "poweroff"])), font=font)
 exitbutton.pack(side=RIGHT)
 exitframe.pack(side=BOTTOM, fill=X)
 root.pack(fill=BOTH, expand=1)
