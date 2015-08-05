@@ -31,19 +31,21 @@ def makeaction(device, action):
 col = 0
 row = 0
 
-kill = True
-def nuke():
-    global kill
-    global tell
+def getnuke(devices):
 
-    for device in tell.devices():
+    kill = True
+    def nuke():
+        nonlocal kill
         if kill:
-            device.turn_off()
+            for device in tell.devices():
+                device.turn_off()
         else:
-            device.turn_on()
+            for device in tell.devices():
+                device.turn_on()
             
-    kill = not kill
+        kill = not kill
 
+    return nuke
 
 devices = tell.devices()
 devices.sort(key=(lambda device: device.name))
@@ -84,7 +86,7 @@ exitframe = Frame(tk)
 exitbutton = Button(exitframe, text='EXIT', command=(lambda: call(["sudo", "poweroff"])), font=font)
 exitbutton.pack(side=RIGHT)
 
-nukebutton = Button(exitframe, text='NUKE', command=nuke, font=font)
+nukebutton = Button(exitframe, text='NUKE', command=getnuke(devices), font=font)
 nukebutton.pack(side=LEFT)
 
 exitframe.pack(side=BOTTOM, fill=X)
