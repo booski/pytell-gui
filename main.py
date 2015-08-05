@@ -35,7 +35,6 @@ def getnuke(devices):
 
     kill = True
     def nuke():
-        nonlocal kill
         if kill:
             for device in tell.devices():
                 device.turn_off()
