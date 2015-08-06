@@ -94,7 +94,7 @@ for device in devices:
     
 
 filepath = os.path.dirname(os.path.realpath(__file__)) + '/power.png'
-image = Image.open(filepath).resize((26,30))
+image = Image.open(filepath).resize((26,30), Image.ANTIALIAS)
 power = ImageTk.PhotoImage(image)
 
 exitframe = Frame(tk)
@@ -104,15 +104,15 @@ exitbutton = Button(exitframe,
                     height=32,
                     command=getshutdown())
 exitbutton.image = power
-exitbutton.pack(side=RIGHT)
+exitbutton.pack(side=LEFT)
 
-nukebutton = Button(exitframe, 
-                    text='NUKE', 
-                    command=getnuke(devices), 
-                    font=font, 
-                    bg='#AAAA00',
-                    activebackground='#FFFF00')
-nukebutton.pack(side=LEFT)
+# nukebutton = Button(exitframe, 
+#                     text='NUKE', 
+#                     command=getnuke(devices), 
+#                     font=font, 
+#                     bg='#AAAA00',
+#                     activebackground='#FFFF00')
+# nukebutton.pack(side=LEFT)
 
 exitframe.pack(side=BOTTOM, fill=X)
 root.pack(fill=BOTH, expand=1)
