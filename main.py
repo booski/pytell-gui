@@ -35,11 +35,12 @@ def getnuke(devices):
 
     kill = True
     def nuke():
+        nonlocal kill
         if kill:
-            for device in tell.devices():
+            for device in devices:
                 device.turn_off()
         else:
-            for device in tell.devices():
+            for device in devices:
                 device.turn_on()
             
         kill = not kill
@@ -82,10 +83,18 @@ for device in devices:
     
 
 exitframe = Frame(tk)
-exitbutton = Button(exitframe, text='EXIT', command=(lambda: call(["sudo", "poweroff"])), font=font)
+exitbutton = Button(exitframe, 
+                    text='EXIT', 
+                    command=(lambda: call(["sudo", "poweroff"])), 
+                    font=font)
 exitbutton.pack(side=RIGHT)
 
-nukebutton = Button(exitframe, text='NUKE', command=getnuke(devices), font=font)
+nukebutton = Button(exitframe, 
+                    text='NUKE', 
+                    command=getnuke(devices), 
+                    font=font, 
+                    bg='#AAAA00',
+                    activebackground='#FFFF00')
 nukebutton.pack(side=LEFT)
 
 exitframe.pack(side=BOTTOM, fill=X)
