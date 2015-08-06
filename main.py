@@ -3,8 +3,10 @@
 from tellcore.telldus import TelldusCore
 from tkinter.tix import *
 from tkinter.font import Font
+from tkinter import messagebox
 from subprocess import call
-
+import os
+from PIL import Image, ImageTk
 
 tk = Tk()
 tell = TelldusCore()
@@ -47,6 +49,15 @@ def getnuke(devices):
 
     return nuke
 
+def getshutdown():
+    
+    def shutdown():
+        if messagebox.askyesno("Really shut down?", "Are you sure you want to shut down the remote?"):
+            call(["sudo", "poweroff"])
+
+    return shutdown
+
+
 devices = tell.devices()
 devices.sort(key=(lambda device: device.name))
 for device in devices:
@@ -82,11 +93,17 @@ for device in devices:
         row += 1
     
 
+filepath = os.path.dirname(os.path.realpath(__file__)) + '/power.png'
+image = Image.open(filepath).resize((26,30))
+power = ImageTk.PhotoImage(image)
+
 exitframe = Frame(tk)
 exitbutton = Button(exitframe, 
-                    text='EXIT', 
-                    command=(lambda: call(["sudo", "poweroff"])), 
-                    font=font)
+                    image=power,
+                    width=28,
+                    height=32,
+                    command=getshutdown())
+exitbutton.image = power
 exitbutton.pack(side=RIGHT)
 
 nukebutton = Button(exitframe, 
