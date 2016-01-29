@@ -33,22 +33,6 @@ def makeaction(device, action):
 col = 0
 row = 0
 
-def getnuke(devices):
-
-    kill = True
-    def nuke():
-        nonlocal kill
-        if kill:
-            for device in devices:
-                device.turn_off()
-        else:
-            for device in devices:
-                device.turn_on()
-            
-        kill = not kill
-
-    return nuke
-
 def getshutdown():
     
     def shutdown():
@@ -105,14 +89,6 @@ exitbutton = Button(exitframe,
                     command=getshutdown())
 exitbutton.image = power
 exitbutton.pack(side=LEFT)
-
-# nukebutton = Button(exitframe, 
-#                     text='NUKE', 
-#                     command=getnuke(devices), 
-#                     font=font, 
-#                     bg='#AAAA00',
-#                     activebackground='#FFFF00')
-# nukebutton.pack(side=LEFT)
 
 exitframe.pack(side=BOTTOM, fill=X)
 root.pack(fill=BOTH, expand=1)
