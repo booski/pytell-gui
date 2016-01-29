@@ -8,14 +8,6 @@ from subprocess import call
 import os
 from PIL import Image, ImageTk
 
-tk = Tk()
-tell = TelldusCore()
-
-font = Font(size=16)
-
-root = ScrolledWindow(tk, scrollbar=Y)
-root.vsb.config(width=28)
-
 def makeaction(device, action):
     def offaction():
         device.turn_off()
@@ -30,8 +22,6 @@ def makeaction(device, action):
     else:
         raise IllegalArgumentException()
 
-col = 0
-row = 0
 
 def getshutdown():
     
@@ -41,6 +31,17 @@ def getshutdown():
 
     return shutdown
 
+
+tk = Tk()
+tell = TelldusCore()
+
+font = Font(size=16)
+
+root = ScrolledWindow(tk, scrollbar=Y)
+root.vsb.config(width=28)
+
+col = 0
+row = 0
 
 devices = tell.devices()
 devices.sort(key=(lambda device: device.name))
