@@ -24,7 +24,6 @@ def makeaction(device, action):
 
 
 def getshutdown():
-    
     def shutdown():
         if messagebox.askyesno("Really shut down?", "Are you sure you want to shut down the remote?"):
             call(["sudo", "poweroff"])
@@ -37,17 +36,39 @@ tell = TelldusCore()
 
 font = Font(size=16)
 
-root = ScrolledWindow(tk, scrollbar=Y)
-root.vsb.config(width=28)
+root = Canvas(tk)
+win = Frame(root)
+
+vsb = Scrollbar(tk, orient=VERTICAL)
+vsb.config(width=28)
+vsb.pack(side=RIGHT, fill=Y)
+tags = vsb.bindtags()
+tags = [ tag for tag in tags if tag != 'all' ]
+vsb.bindtags(tags)
+
+root.configure(yscrollcommand=vsb.set)
+vsb.config(command=root.yview)
+
+winid = root.create_window(0, 0, anchor=NW, window=win)
+
+def scroll_start(event):
+    root.scan_mark(0, event.y)
+    
+def scroll_move(event):
+    root.scan_dragto(0, event.y, gain=1)
+    
+win.bind_all("<ButtonPress-1>", scroll_start)
+win.bind_all("<B1-Motion>", scroll_move)
 
 col = 0
 row = 0
 
 devices = tell.devices()
 devices.sort(key=(lambda device: device.name))
+
 for device in devices:
     
-    container = Frame(root.window)
+    container = Frame(win)
     label = Label(container, text=device.name, font=font)
     label.pack(side=TOP)
     
@@ -93,4 +114,8 @@ exitbutton.pack(side=LEFT)
 
 exitframe.pack(side=BOTTOM, fill=X)
 root.pack(fill=BOTH, expand=1)
+root.update()
+region = (0, 0, win.winfo_reqwidth(), win.winfo_reqheight())
+print(region)
+root.configure(scrollregion=region)
 tk.mainloop()
